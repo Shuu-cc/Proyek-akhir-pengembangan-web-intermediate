@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Story App</title>
+
+    <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="manifest" href="/manifest.json" />
+
+
+    <style>
+    .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    z-index: 100;
+    }
+    .skip-link:focus {
+    top: 0;
+    }
+  </style>
+
+  <base href="/" />
+
+  </head>
+  <body>
+
+    <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+
+    <header>
+      <nav style="display: flex; justify-content: space-between; align-items: center;"></nav>
+      <nav>
+      <div>
+      <button id="to-login">Login</button>
+      <button id="to-register">Register</button>
+      <button id="logout" style="display: none;">Logout</button>
+      <button onclick="window.location.hash='#/add'">➕ Tambah Cerita</button>
+      </div>
+    </nav>
+    </header>
+    <main id="main-content" tabindex="-1" role="main">
+    <div id="app"></div>
+    <div id="map"></div>
+    </main>
+  <script type="module" src="index.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('✅ SW registered'))
+      .catch(err => console.error('❌ SW register failed:', err));
+  }
+</script>
+  </body>
+  <footer style="text-align: center; padding: 10px;">
+  <p>&copy; 2025 Story App. All rights reserved.</p>
+</footer>
+</html>
