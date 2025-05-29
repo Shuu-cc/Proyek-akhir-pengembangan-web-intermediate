@@ -13,6 +13,10 @@ const HomeModel = {
     }
   },
 
+  async getStoriesFromIdb() {
+    return await IdbHelper.getAllStories(); 
+  },
+
   async clearCachedStories() {
     await IdbHelper.clearStories();
   }

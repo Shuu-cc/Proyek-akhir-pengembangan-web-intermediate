@@ -1,4 +1,4 @@
-const AddModel = {
+class AddModel {
   async submitStory({ description, photo, lat, lon }) {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Anda harus login terlebih dahulu.');

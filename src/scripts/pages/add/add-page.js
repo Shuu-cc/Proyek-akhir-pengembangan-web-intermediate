@@ -42,8 +42,13 @@ class AddPage {
 
   async afterRender() {
     this._bindElements();
-    const presenter = new AddPresenter({ view: this, model: AddModel });
-    presenter.init();
+    this._presenter = new AddPresenter({ view: this, model: new AddModel() });
+    await this._presenter.init();
+  }
+
+  
+  destroy() {
+    this._presenter?.destroy();
   }
 
   _bindElements() {
@@ -95,6 +100,24 @@ class AddPage {
     this.lonInput.value = lon;
   }
 
+    showError(text) {
+    this.message.textContent = text;
+    this.message.style.color = 'red';
+  }
+
+  onStorySuccess() {
+    this.message.textContent = '✅ Story berhasil ditambahkan!';
+    this.message.style.color = 'green';
+    setTimeout(() => {
+      this.navigateToHome();
+    }, 1000);
+  }
+
+  navigateToHome() {
+    window.location.hash = '#/';
+  }
+
+
   showCamera(stream) {
     this.video.srcObject = stream;
     this.video.style.display = 'block';
@@ -118,5 +141,6 @@ class AddPage {
     this.message.style.color = isError ? 'red' : 'green';
   }
 }
+
 
 export default AddPage;

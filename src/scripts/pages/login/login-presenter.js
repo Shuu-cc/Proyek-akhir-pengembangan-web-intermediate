@@ -15,17 +15,16 @@ class LoginPresenter {
       localStorage.setItem('name', name);
       
       this._view.onLoginSuccess({ token, name });
-
-      await PushHelper.register();
-       const subscription = await PushHelper.subscribeUser(
-        'BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk'
-      );
-     
-      await PushHelper.sendSubscriptionToServer(subscription);
-    } catch (err) {
+      try {
+      const subRes = await PushHelper.subscribe('BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk', token);
+      console.log('📲 Push subscribed:', subRes);
+      }  catch (err) {
+      console.warn('❌ Gagal subscribe push:', err);
+        }
+      } catch (err) {
       this._view.showMessage(`❌ ${err.message}`, true);
     }
   }
 }
 
-export default LoginPresenter;
+export default LoginPresenter; 

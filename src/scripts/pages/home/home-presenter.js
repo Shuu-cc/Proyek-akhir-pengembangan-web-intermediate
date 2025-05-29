@@ -1,9 +1,12 @@
 import MapView from '../../components/map/map-view.js';
 import HomeModel from './home-model.js';
+import IdbHelper from '../../data/idb-helper.js';
 
 class HomePresenter {
   constructor({ view }) {
     this._view = view;
+    this._view._presenter = this;
+
   }
 
   async init() {
@@ -18,7 +21,20 @@ class HomePresenter {
       this._view.showMap(stories);
     } catch (err) {
       this._view.showError(err.message);
+      const fallback = await this._model.getStoriesFromIdb();
+
+      if (fallback.length) {
+        this._view.showStories(fallback);
+        this._view.showMap(fallback);
+      } else {
+        this._view.showError('❌ Gagal mengambil data. Coba lagi nanti.');
+      }
     }
+  }
+
+  async addFavorite(story) {
+    await IdbHelper.addFavorite(story);
+    // this._view.showMessage('❤️ Story disimpan ke Favorit (Offline)');
   }
 
   async clearCache() {

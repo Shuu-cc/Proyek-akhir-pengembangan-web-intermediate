@@ -14,30 +14,44 @@ class HomePage {
   }
 
   async afterRender() {
-    this.storyListContainer = document.querySelector('#story-list');
     this.mapContainer = document.querySelector('#map');
+    this._storyList = document.querySelector('#story-list');
+
 
     const presenter = new HomePresenter({ view: this });
     await presenter.init();
   }
 
   showStories(stories) {
-    this.storyListContainer.innerHTML = '';
+  this._storyList.innerHTML = '';
 
-    stories.forEach((story) => {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <div class="story-image-container">
-          <img src="${story.photoUrl}" alt="Foto dari cerita oleh ${story.name}" width="100">
-        </div>
-        <div class="story-content">
-          <p><strong>Nama:</strong> ${story.name}</p>
-          <p><strong>Deskripsi:</strong> ${story.description}</p>
-          <p><strong>Tanggal:</strong> ${new Date(story.createdAt).toLocaleDateString()}</p>
-        </div>
-      `;
-      this.storyListContainer.appendChild(li);
+  stories.forEach((story) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div class="story-image-container">
+        <img src="${story.photoUrl}" alt="Foto dari ${story.name}" width="100">
+      </div>
+      <div class="story-content">
+        <p><strong>${story.name}</strong></p>
+        <p>${story.description}</p>
+        <p>${new Date(story.createdAt).toLocaleDateString()}</p>
+        <button class="fav-btn" data-id="${story.id}">❤️ Favorit</button>
+      </div>
+    `;
+    this._storyList.appendChild(li);
+  });
+
+  this._storyList.querySelectorAll('.fav-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.target.dataset.id;
+      const story = stories.find((s) => s.id === id);
+      if (story) {
+        await this._presenter.addFavorite(story);
+        alert('✅ Disimpan ke favorit!');
+      }
     });
+  });
+
   }
 
   showMap(stories) {
